@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=users
+      - PRODUCT_SERVICE_HOST=product-service
+      - PRODUCT_SERVICE_PORT=3001
+
+  product-service:
+    build:
+      context: ./product-service
+    ports:
+      - "4001:4001"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/products
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=3000
+
+  postgres:
+    image: postgres:15.3
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+
+  mongodb:
+    image: mongo:7.0.4
+    ports:
+      - "27017:27017"
