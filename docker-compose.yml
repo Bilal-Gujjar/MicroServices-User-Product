@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   user-service:
@@ -32,9 +32,9 @@ services:
   postgres:
     image: postgres:15.3
     environment:
-      POSTGRES_DB: users
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
+      - POSTGRES_DB=users
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
     ports:
       - "5432:5432"
 
